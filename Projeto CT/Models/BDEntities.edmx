@@ -1,0 +1,417 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="aluno">
+          <Key>
+            <PropertyRef Name="idAluno" />
+          </Key>
+          <Property Name="idAluno" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nome" Type="varchar" MaxLength="40" Nullable="false" />
+          <Property Name="rg" Type="char" MaxLength="8" Nullable="false" />
+          <Property Name="cpf" Type="char" MaxLength="11" Nullable="false" />
+          <Property Name="data_nascimento" Type="date" Nullable="false" />
+          <Property Name="endereco" Type="varchar" MaxLength="80" Nullable="false" />
+          <Property Name="planoSaude" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="numeroAluno" Type="char" MaxLength="11" Nullable="false" />
+          <Property Name="numeroParente" Type="char" MaxLength="11" />
+          <Property Name="foto" Type="varbinary(max)" />
+          <Property Name="dataPagamento" Type="date" Nullable="false" />
+          <Property Name="idTipoMatricula" Type="int" Nullable="false" />
+          <Property Name="idUsuario" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="graduacao">
+          <Key>
+            <PropertyRef Name="idGraduacao" />
+          </Key>
+          <Property Name="idGraduacao" Type="int" Nullable="false" />
+          <Property Name="corGraduacao" Type="varchar" MaxLength="35" Nullable="false" />
+          <Property Name="idUsuario" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="graduacaoAluno">
+          <Key>
+            <PropertyRef Name="idAluno" />
+            <PropertyRef Name="idGraduacao" />
+          </Key>
+          <Property Name="idAluno" Type="int" Nullable="false" />
+          <Property Name="idGraduacao" Type="int" Nullable="false" />
+          <Property Name="dataGraduacao" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tipoMatricula">
+          <Key>
+            <PropertyRef Name="idTipoMatricula" />
+          </Key>
+          <Property Name="idTipoMatricula" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nomeTipo" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="idUsuario" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="usuario">
+          <Key>
+            <PropertyRef Name="idUsuario" />
+          </Key>
+          <Property Name="idUsuario" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nome" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="senha" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_aluno_tipoMatricula">
+          <End Role="tipoMatricula" Type="Self.tipoMatricula" Multiplicity="1" />
+          <End Role="aluno" Type="Self.aluno" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tipoMatricula">
+              <PropertyRef Name="idTipoMatricula" />
+            </Principal>
+            <Dependent Role="aluno">
+              <PropertyRef Name="idTipoMatricula" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_aluno_usuario">
+          <End Role="usuario" Type="Self.usuario" Multiplicity="1" />
+          <End Role="aluno" Type="Self.aluno" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="usuario">
+              <PropertyRef Name="idUsuario" />
+            </Principal>
+            <Dependent Role="aluno">
+              <PropertyRef Name="idUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_graduacao_usuario">
+          <End Role="usuario" Type="Self.usuario" Multiplicity="1" />
+          <End Role="graduacao" Type="Self.graduacao" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="usuario">
+              <PropertyRef Name="idUsuario" />
+            </Principal>
+            <Dependent Role="graduacao">
+              <PropertyRef Name="idUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_graduacaoAluno_aluno">
+          <End Role="aluno" Type="Self.aluno" Multiplicity="1" />
+          <End Role="graduacaoAluno" Type="Self.graduacaoAluno" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="aluno">
+              <PropertyRef Name="idAluno" />
+            </Principal>
+            <Dependent Role="graduacaoAluno">
+              <PropertyRef Name="idAluno" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_graduacaoAluno_graduacao">
+          <End Role="graduacao" Type="Self.graduacao" Multiplicity="1" />
+          <End Role="graduacaoAluno" Type="Self.graduacaoAluno" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="graduacao">
+              <PropertyRef Name="idGraduacao" />
+            </Principal>
+            <Dependent Role="graduacaoAluno">
+              <PropertyRef Name="idGraduacao" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tipoMatricula_usuario">
+          <End Role="usuario" Type="Self.usuario" Multiplicity="1" />
+          <End Role="tipoMatricula" Type="Self.tipoMatricula" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="usuario">
+              <PropertyRef Name="idUsuario" />
+            </Principal>
+            <Dependent Role="tipoMatricula">
+              <PropertyRef Name="idUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ModelStoreContainer">
+          <EntitySet Name="aluno" EntityType="Self.aluno" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="graduacao" EntityType="Self.graduacao" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="graduacaoAluno" EntityType="Self.graduacaoAluno" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tipoMatricula" EntityType="Self.tipoMatricula" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="usuario" EntityType="Self.usuario" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_aluno_tipoMatricula" Association="Self.FK_aluno_tipoMatricula">
+            <End Role="tipoMatricula" EntitySet="tipoMatricula" />
+            <End Role="aluno" EntitySet="aluno" />
+          </AssociationSet>
+          <AssociationSet Name="FK_aluno_usuario" Association="Self.FK_aluno_usuario">
+            <End Role="usuario" EntitySet="usuario" />
+            <End Role="aluno" EntitySet="aluno" />
+          </AssociationSet>
+          <AssociationSet Name="FK_graduacao_usuario" Association="Self.FK_graduacao_usuario">
+            <End Role="usuario" EntitySet="usuario" />
+            <End Role="graduacao" EntitySet="graduacao" />
+          </AssociationSet>
+          <AssociationSet Name="FK_graduacaoAluno_aluno" Association="Self.FK_graduacaoAluno_aluno">
+            <End Role="aluno" EntitySet="aluno" />
+            <End Role="graduacaoAluno" EntitySet="graduacaoAluno" />
+          </AssociationSet>
+          <AssociationSet Name="FK_graduacaoAluno_graduacao" Association="Self.FK_graduacaoAluno_graduacao">
+            <End Role="graduacao" EntitySet="graduacao" />
+            <End Role="graduacaoAluno" EntitySet="graduacaoAluno" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tipoMatricula_usuario" Association="Self.FK_tipoMatricula_usuario">
+            <End Role="usuario" EntitySet="usuario" />
+            <End Role="tipoMatricula" EntitySet="tipoMatricula" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="aluno">
+          <Key>
+            <PropertyRef Name="idAluno" />
+          </Key>
+          <Property Name="idAluno" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nome" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="rg" Type="String" MaxLength="8" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="cpf" Type="String" MaxLength="11" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="data_nascimento" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="endereco" Type="String" MaxLength="80" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="planoSaude" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="numeroAluno" Type="String" MaxLength="11" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="numeroParente" Type="String" MaxLength="11" FixedLength="true" Unicode="false" />
+          <Property Name="foto" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="dataPagamento" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="idTipoMatricula" Type="Int32" Nullable="false" />
+          <Property Name="idUsuario" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tipoMatricula" Relationship="Self.FK_aluno_tipoMatricula" FromRole="aluno" ToRole="tipoMatricula" />
+          <NavigationProperty Name="usuario" Relationship="Self.FK_aluno_usuario" FromRole="aluno" ToRole="usuario" />
+          <NavigationProperty Name="graduacaoAluno" Relationship="Self.FK_graduacaoAluno_aluno" FromRole="aluno" ToRole="graduacaoAluno" />
+        </EntityType>
+        <EntityType Name="graduacao">
+          <Key>
+            <PropertyRef Name="idGraduacao" />
+          </Key>
+          <Property Name="idGraduacao" Type="Int32" Nullable="false" />
+          <Property Name="corGraduacao" Type="String" MaxLength="35" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="idUsuario" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="usuario" Relationship="Self.FK_graduacao_usuario" FromRole="graduacao" ToRole="usuario" />
+          <NavigationProperty Name="graduacaoAluno" Relationship="Self.FK_graduacaoAluno_graduacao" FromRole="graduacao" ToRole="graduacaoAluno" />
+        </EntityType>
+        <EntityType Name="graduacaoAluno">
+          <Key>
+            <PropertyRef Name="idAluno" />
+            <PropertyRef Name="idGraduacao" />
+          </Key>
+          <Property Name="idAluno" Type="Int32" Nullable="false" />
+          <Property Name="idGraduacao" Type="Int32" Nullable="false" />
+          <Property Name="dataGraduacao" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="aluno" Relationship="Self.FK_graduacaoAluno_aluno" FromRole="graduacaoAluno" ToRole="aluno" />
+          <NavigationProperty Name="graduacao" Relationship="Self.FK_graduacaoAluno_graduacao" FromRole="graduacaoAluno" ToRole="graduacao" />
+        </EntityType>
+        <EntityType Name="tipoMatricula">
+          <Key>
+            <PropertyRef Name="idTipoMatricula" />
+          </Key>
+          <Property Name="idTipoMatricula" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nomeTipo" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="idUsuario" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="aluno" Relationship="Self.FK_aluno_tipoMatricula" FromRole="tipoMatricula" ToRole="aluno" />
+          <NavigationProperty Name="usuario" Relationship="Self.FK_tipoMatricula_usuario" FromRole="tipoMatricula" ToRole="usuario" />
+        </EntityType>
+        <EntityType Name="usuario">
+          <Key>
+            <PropertyRef Name="idUsuario" />
+          </Key>
+          <Property Name="idUsuario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nome" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="senha" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="aluno" Relationship="Self.FK_aluno_usuario" FromRole="usuario" ToRole="aluno" />
+          <NavigationProperty Name="graduacao" Relationship="Self.FK_graduacao_usuario" FromRole="usuario" ToRole="graduacao" />
+          <NavigationProperty Name="tipoMatricula" Relationship="Self.FK_tipoMatricula_usuario" FromRole="usuario" ToRole="tipoMatricula" />
+        </EntityType>
+        <Association Name="FK_aluno_tipoMatricula">
+          <End Role="tipoMatricula" Type="Self.tipoMatricula" Multiplicity="1" />
+          <End Role="aluno" Type="Self.aluno" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tipoMatricula">
+              <PropertyRef Name="idTipoMatricula" />
+            </Principal>
+            <Dependent Role="aluno">
+              <PropertyRef Name="idTipoMatricula" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_aluno_usuario">
+          <End Role="usuario" Type="Self.usuario" Multiplicity="1" />
+          <End Role="aluno" Type="Self.aluno" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="usuario">
+              <PropertyRef Name="idUsuario" />
+            </Principal>
+            <Dependent Role="aluno">
+              <PropertyRef Name="idUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_graduacaoAluno_aluno">
+          <End Role="aluno" Type="Self.aluno" Multiplicity="1" />
+          <End Role="graduacaoAluno" Type="Self.graduacaoAluno" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="aluno">
+              <PropertyRef Name="idAluno" />
+            </Principal>
+            <Dependent Role="graduacaoAluno">
+              <PropertyRef Name="idAluno" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_graduacao_usuario">
+          <End Role="usuario" Type="Self.usuario" Multiplicity="1" />
+          <End Role="graduacao" Type="Self.graduacao" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="usuario">
+              <PropertyRef Name="idUsuario" />
+            </Principal>
+            <Dependent Role="graduacao">
+              <PropertyRef Name="idUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_graduacaoAluno_graduacao">
+          <End Role="graduacao" Type="Self.graduacao" Multiplicity="1" />
+          <End Role="graduacaoAluno" Type="Self.graduacaoAluno" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="graduacao">
+              <PropertyRef Name="idGraduacao" />
+            </Principal>
+            <Dependent Role="graduacaoAluno">
+              <PropertyRef Name="idGraduacao" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tipoMatricula_usuario">
+          <End Role="usuario" Type="Self.usuario" Multiplicity="1" />
+          <End Role="tipoMatricula" Type="Self.tipoMatricula" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="usuario">
+              <PropertyRef Name="idUsuario" />
+            </Principal>
+            <Dependent Role="tipoMatricula">
+              <PropertyRef Name="idUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BDEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="aluno" EntityType="Self.aluno" />
+          <EntitySet Name="graduacao" EntityType="Self.graduacao" />
+          <EntitySet Name="graduacaoAluno" EntityType="Self.graduacaoAluno" />
+          <EntitySet Name="tipoMatricula" EntityType="Self.tipoMatricula" />
+          <EntitySet Name="usuario" EntityType="Self.usuario" />
+          <AssociationSet Name="FK_aluno_tipoMatricula" Association="Self.FK_aluno_tipoMatricula">
+            <End Role="tipoMatricula" EntitySet="tipoMatricula" />
+            <End Role="aluno" EntitySet="aluno" />
+          </AssociationSet>
+          <AssociationSet Name="FK_aluno_usuario" Association="Self.FK_aluno_usuario">
+            <End Role="usuario" EntitySet="usuario" />
+            <End Role="aluno" EntitySet="aluno" />
+          </AssociationSet>
+          <AssociationSet Name="FK_graduacaoAluno_aluno" Association="Self.FK_graduacaoAluno_aluno">
+            <End Role="aluno" EntitySet="aluno" />
+            <End Role="graduacaoAluno" EntitySet="graduacaoAluno" />
+          </AssociationSet>
+          <AssociationSet Name="FK_graduacao_usuario" Association="Self.FK_graduacao_usuario">
+            <End Role="usuario" EntitySet="usuario" />
+            <End Role="graduacao" EntitySet="graduacao" />
+          </AssociationSet>
+          <AssociationSet Name="FK_graduacaoAluno_graduacao" Association="Self.FK_graduacaoAluno_graduacao">
+            <End Role="graduacao" EntitySet="graduacao" />
+            <End Role="graduacaoAluno" EntitySet="graduacaoAluno" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tipoMatricula_usuario" Association="Self.FK_tipoMatricula_usuario">
+            <End Role="usuario" EntitySet="usuario" />
+            <End Role="tipoMatricula" EntitySet="tipoMatricula" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="BDEntities">
+          <EntitySetMapping Name="aluno">
+            <EntityTypeMapping TypeName="Model.aluno">
+              <MappingFragment StoreEntitySet="aluno">
+                <ScalarProperty Name="idAluno" ColumnName="idAluno" />
+                <ScalarProperty Name="nome" ColumnName="nome" />
+                <ScalarProperty Name="rg" ColumnName="rg" />
+                <ScalarProperty Name="cpf" ColumnName="cpf" />
+                <ScalarProperty Name="data_nascimento" ColumnName="data_nascimento" />
+                <ScalarProperty Name="endereco" ColumnName="endereco" />
+                <ScalarProperty Name="planoSaude" ColumnName="planoSaude" />
+                <ScalarProperty Name="numeroAluno" ColumnName="numeroAluno" />
+                <ScalarProperty Name="numeroParente" ColumnName="numeroParente" />
+                <ScalarProperty Name="foto" ColumnName="foto" />
+                <ScalarProperty Name="dataPagamento" ColumnName="dataPagamento" />
+                <ScalarProperty Name="idTipoMatricula" ColumnName="idTipoMatricula" />
+                <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="graduacao">
+            <EntityTypeMapping TypeName="Model.graduacao">
+              <MappingFragment StoreEntitySet="graduacao">
+                <ScalarProperty Name="idGraduacao" ColumnName="idGraduacao" />
+                <ScalarProperty Name="corGraduacao" ColumnName="corGraduacao" />
+                <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="graduacaoAluno">
+            <EntityTypeMapping TypeName="Model.graduacaoAluno">
+              <MappingFragment StoreEntitySet="graduacaoAluno">
+                <ScalarProperty Name="idAluno" ColumnName="idAluno" />
+                <ScalarProperty Name="idGraduacao" ColumnName="idGraduacao" />
+                <ScalarProperty Name="dataGraduacao" ColumnName="dataGraduacao" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tipoMatricula">
+            <EntityTypeMapping TypeName="Model.tipoMatricula">
+              <MappingFragment StoreEntitySet="tipoMatricula">
+                <ScalarProperty Name="idTipoMatricula" ColumnName="idTipoMatricula" />
+                <ScalarProperty Name="nomeTipo" ColumnName="nomeTipo" />
+                <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="usuario">
+            <EntityTypeMapping TypeName="Model.usuario">
+              <MappingFragment StoreEntitySet="usuario">
+                <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+                <ScalarProperty Name="nome" ColumnName="nome" />
+                <ScalarProperty Name="senha" ColumnName="senha" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
