@@ -1,0 +1,57 @@
+﻿@{
+    ViewBag.Title = "Editar Ficha do aluno";
+    List<Projeto_CT.Models.tipoMatricula> tipoMatricula = (List<Projeto_CT.Models.tipoMatricula>)ViewBag.tipoMatricula;
+    Projeto_CT.Models.aluno aluno = (Projeto_CT.Models.aluno)ViewBag.alunoEdit;
+}
+
+<div class="wrapper fadeInDown">
+    <div id="formContent">
+        <form action="/Aluno/alterarCad?idA=@aluno.idAluno" method="post" enctype="multipart/form-data">
+            <label> Nome completo do aluno*: </label><br />
+            <input type="text" id="nome" class="fadeIn second" name="nome" placeholder="Nome" value="@aluno.nome" required> <br /><br />
+
+            <label> RG (Apenas os números)*: </label> <br />
+            <input type="text" id="rg" size="8" class="fadeIn third" name="rg" placeholder="RG sem a pontuação e o digíto" value="@aluno.rg" required> <br /><br />
+
+            <label> CPF (Apenas os números)*: </label> <br />
+            <input type="text" id="cpf" size="11" class="fadeIn third" name="cpf" placeholder="CPF sem a pontuação" value="@aluno.cpf" required> <br /><br />
+
+            <label> Data de nascimento*: </label> <br />
+            <input type="date" id="dataNascimento" class="fadeIn third" name="dataNascimento" placeholder="Data de nascimento" value="@aluno.data_nascimento" required> <br /><br />
+
+            <label> Endereço*: </label> <br />
+            <input type="text" id="endereco" class="fadeIn third" name="endereco" placeholder="Endereço" value="@aluno.endereco" required> <br /><br />
+
+            <label> Plano de Saúde/ Hospital de Urgência*: </label> <br />
+            <input type="text" id="planoSaude" class="fadeIn third" name="planoSaude" placeholder="Plano de saúde" value="@aluno.planoSaude" required> <br /><br />
+
+            <label> Número de telefone do Aluno*: </label> <br />
+            <input type="text" id="numeroAluno" class="fadeIn third" name="numeroAluno" placeholder="Número do aluno" value="@aluno.numeroAluno" required> <br /><br />
+
+            <label> Número de telefone de um familiar: </label> <br />
+            <input type="text" id="numeroParente" class="fadeIn third" name="numeroParente" placeholder="Número alternativo" value="@aluno.numeroParente"> <br /><br />
+
+            <label> Foto 3x4 para ficha: </label> <br />
+            <input type="file" id="foto" class="fadeIn third" name="foto" placeholder="Anexo"> <br /><br />
+
+            <label> Selecione um tipo de matrícula*: </label>
+            <select name="tipoMatricula" autofocus required>
+                @foreach (var item in tipoMatricula)
+                {
+                    if (item.idTipoMatricula == aluno.idTipoMatricula)
+                    {
+                        <option value="@item.idTipoMatricula" selected> @item.nomeTipo </option>
+                    }
+                    else
+                    {
+                        <option value="@item.idTipoMatricula">@item.nomeTipo</option>
+}
+
+                }
+            </select> <br />
+
+            <input type="submit" class="fadeIn fourth" value="Alterar">
+            <a href="/Aluno/telaListarAlunos" class="btn btn-secondary"> Voltar </a>
+        </form>
+    </div>
+</div>

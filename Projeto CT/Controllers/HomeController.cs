@@ -21,7 +21,8 @@ namespace Projeto_CT.Controllers
         public ActionResult Index()
         {
             if(VerificarLogin()){
-                return View((usuario)Session["UserAuth"]);
+                ViewBag.usuario = (usuario)Session["UserAuth"];
+                return View();
             }
             else
             {

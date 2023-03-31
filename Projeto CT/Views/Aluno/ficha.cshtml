@@ -1,0 +1,91 @@
+﻿@{
+    ViewBag.Title = "Listagem de alunos";
+    int idGraduacao = (int)ViewBag.graduacao;
+    Projeto_CT.Models.aluno aluno = (Projeto_CT.Models.aluno)ViewBag.aluno;
+}
+
+<img src="@Url.Action("getImg","Aluno", new {id = aluno.idAluno})" alt="Foto do aluno" width="10%" />
+<br />
+<br />
+
+<label> Nome:</label>
+@aluno.nome
+<br />
+<br />
+
+<label> RG: </label>
+@aluno.rg
+<br />
+<br />
+
+<label> CPF: </label>
+@aluno.cpf
+<br />
+<br />
+
+<label> Data de nascimento: </label>
+@aluno.data_nascimento
+<br />
+<br />
+
+<label> Endereço: </label>
+@aluno.endereco
+<br />
+<br />
+
+<label> Plano de Saúde/ Hospital de Urgência: </label>
+@aluno.planoSaude
+<br />
+<br />
+
+<label> Número do aluno: </label>
+@aluno.numeroAluno
+<br />
+<br />
+
+<label> Número de alguém familiar: </label>
+@aluno.numeroParente
+<br />
+<br />
+
+<label> Próximo pagamento no dia: </label>
+@aluno.dataPagamento
+<br />
+<br />
+
+<label> Tipo de matrícula: </label>
+@switch (aluno.idTipoMatricula)
+{
+    case 4:
+        <label> Dois dias na semana - R$70 </label>
+        break;
+    case 5:
+        <label>Três dias na semana - R$80</label>
+        break;
+    case 6:
+        <label> Quatro dias na semana - R$90 </label>
+        break;
+    case 7:
+        <label> Cinco dias na semana - R$100</label>
+        break;
+}
+<br />
+<br />
+
+<label> Graduação: </label>
+@if (idGraduacao == 0)
+{
+
+<label> Sem graduação </label>
+}
+else 
+{ 
+   <label> @Html.Action("getColor", "Aluno", new { id = idGraduacao })  </label>
+
+}
+    
+<br />
+<br />
+<a href="/Aluno/telaListarAlunos" class="btn btn-secondary"> Voltar </a>
+<a href="/Aluno/telaEditar?id=@aluno.idAluno" class="btn btn-warning"> Editar Ficha </a>
+<a href="/Aluno/excluir?id=@aluno.idAluno" class="btn btn-danger"> Excluir Ficha </a>
